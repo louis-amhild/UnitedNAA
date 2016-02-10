@@ -1,22 +1,52 @@
 package com.united.data;
-import com.orm.SugarRecord;
-import com.orm.dsl.Unique;
 
-public class PatientData extends SugarRecord
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable
+public class PatientData
 {
-    @Unique
-    String isbn;
-    String title;
-    String edition;
+    @DatabaseField(generatedId=true)
+    private int id;
 
-    // Default constructor is necessary for SugarRecord
-    public PatientData() {
+    @DatabaseField
+    private String name;
 
+    @DatabaseField
+    private String description;
+
+    @DatabaseField(foreign=true,foreignAutoRefresh=true)
+    private PatientData list;
+
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public PatientData(String isbn, String title, String edition) {
-        this.isbn = isbn;
-        this.title = title;
-        this.edition = edition;
+    public int getId() {
+        return id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setList(PatientData list) {
+        this.list = list;
+    }
+
+    public PatientData getList() {
+        return list;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

@@ -1,5 +1,7 @@
 package com.united.app;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -8,13 +10,24 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
+import com.united.data.DatabaseManager;
 import com.united.data.PatientData;
+
+import java.util.ArrayList;
 
 public class PatientDataActivity extends AppCompatActivity
 {
@@ -22,6 +35,38 @@ public class PatientDataActivity extends AppCompatActivity
                                                 "History",
                                                 "Pregnancy",
                                                 "ANC Visit" };
+
+    private final ArrayList<InputDataDescriptor> mInputFieldsGeneralMother = new ArrayList<InputDataDescriptor>() {
+        {
+            add(new InputDataDescriptor("First Name", "FirstName", "Type"));
+            add(new InputDataDescriptor("Other Name", "OtherName", "Type"));
+        }
+    };
+
+    private final ArrayList<InputDataDescriptor> mInputFieldsGeneralFather = new ArrayList<InputDataDescriptor>() {
+        {
+            add(new InputDataDescriptor("First name", "FirstName", "Type"));
+        }
+    };
+
+    private final ArrayList<InputDataDescriptor> mInputFieldsHistory = new ArrayList<InputDataDescriptor>() {
+        {
+            add(new InputDataDescriptor("First name", "FirstName", "Type"));
+        }
+    };
+
+    private final ArrayList<InputDataDescriptor> mInputFieldsPregnancy = new ArrayList<InputDataDescriptor>() {
+        {
+            add(new InputDataDescriptor("First name", "FirstName", "Type"));
+
+        }
+    };
+
+    private final ArrayList<InputDataDescriptor> mInputFieldsAnc = new ArrayList<InputDataDescriptor>() {
+        {
+            add(new InputDataDescriptor("First name", "FirstName", "Type"));
+        }
+    };
 
     private PatientData mPatientData;
 
@@ -50,8 +95,7 @@ public class PatientDataActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
+        // Create the adapter that will return a fragment for each sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
@@ -61,17 +105,16 @@ public class PatientDataActivity extends AppCompatActivity
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        // Create new patient entry in database
-        mPatientData = new PatientData("isbn123", "Title here", "2nd edition");
-        System.out.println("********** Init patient data: " + mPatientData);
+        // TODO remove test - Create new patient entry in database
+        mPatientData = new PatientData();
+        mPatientData.setName("First test person");
     }
 
     @Override
     public void onStop()
     {
-        mPatientData.save();
+        DatabaseManager.getInstance().addPatientData(mPatientData);
         super.onStop();
-        System.out.println("********** Save patient data: " + mPatientData);
     }
 
     @Override
@@ -99,6 +142,7 @@ public class PatientDataActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -120,6 +164,7 @@ public class PatientDataActivity extends AppCompatActivity
          */
         public static PlaceholderFragment newInstance(int sectionNumber)
         {
+            // generate fragment
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
@@ -152,7 +197,6 @@ public class PatientDataActivity extends AppCompatActivity
         public Fragment getItem(int position)
         {
             // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
             return PlaceholderFragment.newInstance(position + 1);
         }
 
@@ -167,6 +211,20 @@ public class PatientDataActivity extends AppCompatActivity
         public CharSequence getPageTitle(int position)
         {
             return mTabList[position];
+        }
+    }
+
+    public class InputDataDescriptor
+    {
+        String mInputName;
+        String mInputLabel;
+        String mInputType;
+
+        InputDataDescriptor(String name, String label, String type)
+        {
+            mInputName = name;
+            mInputLabel = label;
+            mInputType = type;
         }
     }
 }

@@ -10,6 +10,7 @@ import android.view.View;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.united.data.DatabaseManager;
 
 public class MainMenuActivity extends AppCompatActivity
 {
@@ -24,6 +25,8 @@ public class MainMenuActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+
+        DatabaseManager.init(this);
 
         // Setup custom toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

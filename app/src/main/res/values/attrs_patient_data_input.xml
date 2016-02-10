@@ -1,0 +1,7 @@
+<resources>
+    <declare-styleable name="PatientDataInput">
+        <attr name="label" format="string"/>
+        <attr name="id" format="dimension"/>
+        <attr name="type" format="color"/>
+    </declare-styleable>
+</resources>
